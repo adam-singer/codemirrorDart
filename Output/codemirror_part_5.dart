@@ -49,7 +49,7 @@ markText(doc, from, to, options, type) {
     'from': from,
     'to': to,
     'origin': "markText"
-  }, doc.sel, NaN);
+  }, doc.sel, double.NAN);
 
   var curLine = from.line,
       cm = doc.cm,
@@ -351,7 +351,7 @@ readToken(mode, stream, state) {
   return style;
 }
 
-runMode(cm, text, mode, state, f, lineClasses, forceToEnd) {
+runMode(cm, text, mode, state, f, lineClasses, [forceToEnd]) {
   var flattenSpans = mode.flattenSpans;
   if (flattenSpans == null) flattenSpans = cm.options.flattenSpans;
   var curStart = 0,
@@ -442,7 +442,7 @@ getLineStyles(cm, line) {
   return line.styles;
 }
 
-processLine(cm, text, state, startAt) {
+processLine(cm, text, state, [startAt]) {
   var mode = cm.doc.mode;
   var stream = new StringStream(text, cm.options.tabSize);
   stream.start = stream.pos = startAt || 0;
@@ -775,7 +775,7 @@ updateDoc(doc, change, [markedSpans, estimateHeight]) {
 
 
 
-linkedDocs(doc, f, sharedHistOnly) {
+linkedDocs(doc, f, [sharedHistOnly]) {
   propagate(doc, skip, sharedHist) {
     if (doc.linked) for (var i = 0; i < doc.linked.length; ++i) {
       var rel = doc.linked[i];
@@ -961,7 +961,7 @@ fireDelayed() {
   for (var i = 0; i < delayed.length; ++i) delayed[i]();
 }
 
-signalDOMEvent(cm, e, override) {
+signalDOMEvent(cm, e, [override]) {
   signal(cm, override || e.type, cm, e);
   return e_defaultPrevented(e) || e.codemirrorIgnore;
 }
@@ -973,7 +973,7 @@ hasHandler(emitter, type) {
 
 
 
-elt(tag, content, [className, style]) {
+elt(tag, [content, className, style]) {
   var e = document.createElement(tag);
   if (className != null) e.className = className;
   if (style != null) e.style.cssText = style;

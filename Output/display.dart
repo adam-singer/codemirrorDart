@@ -102,7 +102,7 @@ class Display {
 
 
     this.heightForcer = elt("div", null, null, "position: absolute; height: " +
-        scrollerCutOff + "px; width: 1px;");
+        scrollerCutOff.toString() + "px; width: 1px;");
 
     this.gutters = elt("div", null, "CodeMirror-gutters");
     this.lineGutter = null;

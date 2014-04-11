@@ -2,7 +2,7 @@ part of codemirror.dart;
 
 
 
-cursorCoords(cm, pos, context, lineObj, preparedMeasure) {
+cursorCoords(cm, pos, context, [lineObj, preparedMeasure]) {
   lineObj = lineObj || getLine(cm.doc, pos.line);
   if (!preparedMeasure) preparedMeasure = prepareMeasureForLine(cm, lineObj);
   get(ch, [right]) {
@@ -424,8 +424,8 @@ viewCuttingPoint(cm, oldN, newN, dir) {
       diff,
       view = cm.display.view;
   if (!sawCollapsedSpans) return {
-    index: index,
-    lineN: newN
+    'index': index,
+    'lineN': newN
   };
   var n = cm.display.viewFrom;
   for (var i = 0; i < index; i++) n += view[i].size;
@@ -601,7 +601,7 @@ readInput(cm) {
   return true;
 }
 
-resetInput(cm, typing) {
+resetInput(cm, [typing]) {
   var minimal,
       selected,
       doc = cm.doc;
@@ -816,7 +816,7 @@ eventInWidget(display, e) {
   }
 }
 
-posFromMouse(cm, e, liberal, forRect) {
+posFromMouse(cm, e, [liberal, forRect]) {
   var display = cm.display;
   if (!liberal) {
     var target = e_target(e);

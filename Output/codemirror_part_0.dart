@@ -160,7 +160,7 @@ copyState(mode, state) {
   return nstate;
 }
 
-startState(mode, a1, a2) {
+startState(mode, [a1, a2]) {
   return mode.startState ? mode.startState(a1, a2) : true;
 }
 

@@ -44,7 +44,7 @@ class Doc {
     });
     _setSelection(this, simpleSelection(start), sel_dontScroll);
   }
-  iter(from, to, op) {
+  iter(from, [to, op]) {
     if (op) {
       this.iterN(from - this.first, to - from, op);
     } else {

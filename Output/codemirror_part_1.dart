@@ -173,7 +173,7 @@ updateScrollbars(cm, [measure]) {
     d.scrollbarV.style.bottom = needsH ? scrollbarWidth(d.measure) + "px" : "0";
 
     d.scrollbarV.firstChild.style.height = math.max(0, scrollHeight -
-        measure.clientHeight + (measure.barHeight || d.scrollbarV.clientHeight)) + "px";
+        measure.clientHeight + (measure.barHeight || d.scrollbarV.clientHeight)).toString() + "px";
   } else {
     d.scrollbarV.style.display = "";
     d.scrollbarV.firstChild.style.height = "0";
@@ -211,7 +211,7 @@ updateScrollbars(cm, [measure]) {
   }
 }
 
-visibleLines(display, doc, viewPort) {
+visibleLines(display, doc, [viewPort]) {
   var top = viewPort && viewPort.top != null ? viewPort.top :
       display.scroller.scrollTop;
   top = (top - paddingTop(display)).floor();
@@ -293,7 +293,7 @@ compensateForHScroll(display) {
       display.sizer.getBoundingClientRect().left;
 }
 
-updateDisplay(cm, viewPort, forced) {
+updateDisplay(cm, viewPort, [forced]) {
   var oldFrom = cm.display.viewFrom,
       oldTo = cm.display.viewTo,
       updated;
@@ -424,7 +424,7 @@ setDocumentHeight(cm, measure) {
   cm.display.sizer.style.minHeight = cm.display.heightForcer.style.top =
       measure.docHeight + "px";
   cm.display.gutters.style.height = math.max(measure.docHeight,
-      measure.clientHeight - scrollerCutOff) + "px";
+      measure.clientHeight - scrollerCutOff).toString() + "px";
 }
 
 checkForWebkitWidthBug(cm, measure) {

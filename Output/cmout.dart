@@ -28,3 +28,5 @@ part 'leaf_chunk.dart';
 part 'branch_chunk.dart';
 part 'history.dart';
 part 'bidi.dart';
+
+part 'extras.dart';

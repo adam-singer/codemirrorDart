@@ -131,7 +131,7 @@ setScrollTop(cm, val) {
   startWorker(cm, 100);
 }
 
-setScrollLeft(cm, val, isScroller) {
+setScrollLeft(cm, val, [isScroller]) {
   if (isScroller ? val == cm.doc.scrollLeft : (cm.doc.scrollLeft - val).abs()
       < 2) return;
   val = math.min(val, cm.display.scroller.scrollWidth -
@@ -554,17 +554,17 @@ filterChange(doc, change, update) {
   };
 }
 
-makeChange(doc, change, ignoreReadOnly) {
+makeChange(doc, change, [ignoreReadOnly]) {
   if (doc.cm) {
     if (!doc.cm.curOp) return operation(doc.cm, makeChange)(doc, change,
         ignoreReadOnly);
-    if (doc.cm.state.suppressEdits) return;
+    if (doc.cm.state.suppressEdits) return null;
   }
 
   if (hasHandler(doc, "beforeChange") || doc.cm && hasHandler(doc.cm,
       "beforeChange")) {
     change = filterChange(doc, change, true);
-    if (!change) return;
+    if (!change) return null;
   }
 
 
@@ -612,8 +612,8 @@ makeChangeFromHistory(doc, type, allowSelectionOnly) {
       dest = type == "undo" ? hist.undone : hist.done;
 
 
-
-  for (var i = 0; i < source.length; i++) {
+  var i;
+  for (i = 0; i < source.length; i++) {
     event = source[i];
     if (allowSelectionOnly ? event.ranges && !event.equals(doc.sel) :
         !event.ranges) break;

@@ -138,7 +138,7 @@ clipPosArray(doc, array) {
   return out;
 }
 
-extendRange(doc, range, head, other) {
+extendRange(doc, range, head, [other]) {
   if (doc.cm && doc.cm.display.shift || doc.extend) {
     var anchor = range.anchor;
     if (other) {
@@ -156,7 +156,7 @@ extendRange(doc, range, head, other) {
   }
 }
 
-extendSelection(doc, head, other, options) {
+extendSelection(doc, head, [other, options]) {
   _setSelection(doc, new Selection([extendRange(doc, doc.sel.primary(), head,
       other)], 0), options);
 }
@@ -198,7 +198,7 @@ filterSelectionChange(doc, sel) {
   }
 }
 
-setSelectionReplaceHistory(doc, sel, options) {
+setSelectionReplaceHistory(doc, sel, [options]) {
   var done = doc.history.done,
       last = lst(done);
   if (last && last.ranges) {
@@ -357,8 +357,8 @@ drawSelectionCursor(cm, range, output) {
   var cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor"));
   cursor.style.left = pos.left + "px";
   cursor.style.top = pos.top + "px";
-  cursor.style.height = math.max(0, pos.bottom - pos.top) *
-      cm.options.cursorHeight + "px";
+  cursor.style.height = (math.max(0, pos.bottom - pos.top) *
+      cm.options.cursorHeight).toString() + "px";
 
   if (pos.other) {
 
@@ -534,7 +534,7 @@ findStartLine(cm, n, precise) {
   return minline;
 }
 
-getStateBefore(cm, n, precise) {
+getStateBefore(cm, n, [precise]) {
   var doc = cm.doc,
       display = cm.display;
   if (!doc.mode.startState) return true;

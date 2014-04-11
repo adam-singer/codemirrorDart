@@ -15,7 +15,7 @@ class History {
   History(startGen) {
     this.done = [];
     this.undone = [];
-    this.undoDepth = Infinity;
+    this.undoDepth = double.INFINITY;
 
 
     this.lastModTime = this.lastSelTime = 0;
@@ -151,8 +151,8 @@ attachLocalSpans(doc, change, from, to) {
 
 removeClearedSpans(spans) {
   if (!spans) return null;
-  for (var i = 0,
-      out; i < spans.length; ++i) {
+  var out;
+  for (var i = 0; i < spans.length; ++i) {
     if (spans[i].marker.explicitlyCleared) {
       if (!out) out = spans.slice(0, i);
     } else if (out) out.push(spans[i]);
