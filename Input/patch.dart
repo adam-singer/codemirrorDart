@@ -1,41 +1,44 @@
-bool typeOfReplacement(var a, var b)
-{
+part of codemirror.dart.utils;
 
+bool typeOfReplacement(var a, var b) {
   return false;
 }
 
-int currentTimeInMs()
-{
+bool hasSelection(a) {
+  return false;
+}
+
+int currentTimeInMs() {
   return 0;
 }
 
-setTimeout(a, b)
-{}
+setTimeout(a, b) {
+}
 
-clearTimeout(a)
-{
-
+clearTimeout(a) {
 }
 
 
-clearInterval(a)
-{
-
+clearInterval(a) {
 }
 
-parseInt(a)
-{
-
+setInterval(a, b) {
 }
 
-//=====
-
-Pos(a, b)
-{
-	return new Pos(a,b);
+parseInt(a) {
 }
 
-Array(a)
-{
-  
+newPos(a, b) {
+  return new Pos(a, b);
+}
+
+Array(a) {
+}
+
+Number(x) {
+}
+
+class Refexp {
+  Refexp(String x);
+  bool test(String input) => false;
 }
