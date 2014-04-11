@@ -43,7 +43,8 @@ bidiOrdering(str) {
     if (type == ",") {
       types[i] = "N";
     } else if (type == "%") {
-      for (var end = i + 1; end < len && types[end] == "%"; ++end) {}
+      var end = i + 1;
+      for (; end < len && types[end] == "%"; ++end) {}
       var replace = (i && types[i - 1] == "!") || (end < len && types[end] ==
           "1") ? "1" : "N";
       for (var j = i; j < end; ++j) types[j] = replace;
@@ -61,7 +62,8 @@ bidiOrdering(str) {
 
   for (var i = 0; i < len; ++i) {
     if (isNeutral.test(types[i])) {
-      for (var end = i + 1; end < len && isNeutral.test(types[end]); ++end) {}
+      var end = i + 1;
+      for (; end < len && isNeutral.test(types[end]); ++end) {}
       var before = (i ? types[i - 1] : outerType) == "L";
       var after = (end < len ? types[end] : outerType) == "L";
       var replace = before || after ? "L" : "R";

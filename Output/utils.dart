@@ -14,6 +14,9 @@ class Delayed {
   }
 }
 
+// Number of pixels added to scroller and sizer to hide scrollbar
+int scrollerCutOff = 30;
+
 // One-char codes used for character types:
 // L (L):   Left-to-Right
 // R (R):   Right-to-Left
