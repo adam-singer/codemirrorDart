@@ -5,10 +5,10 @@ part of codemirror.dart;
 cursorCoords(cm, pos, context, lineObj, preparedMeasure) {
   lineObj = lineObj || getLine(cm.doc, pos.line);
   if (!preparedMeasure) preparedMeasure = prepareMeasureForLine(cm, lineObj);
-  get(ch, right) {
+  get(ch, [right]) {
     var m = measureCharPrepared(cm, preparedMeasure, ch, right ? "right" :
         "left");
-    if (right) {
+    if (right != null) {
       m.left = m.right;
     } else {
       m.right = m.left;
@@ -121,7 +121,7 @@ coordsCharInner(cm, lineObj, lineNo, x, y) {
           toOutside, xDiff < -1 ? -1 : xDiff > 1 ? 1 : 0);
       return pos;
     }
-    var step = Math.ceil(dist / 2),
+    var step = (dist / 2).ceil(),
         middle = from + step;
     if (bidi) {
       middle = from;
@@ -174,20 +174,20 @@ charWidth(display) {
 
 startOperation(cm) {
   cm.curOp = {
-    viewChanged: false,
-    startHeight: cm.doc.height,
-    forceUpdate: false,
-    updateInput: null,
-    typing: false,
-    changeObjs: null,
-    origin: null,
-    cursorActivity: false,
-    selectionChanged: false,
-    updateMaxLine: false,
-    scrollLeft: null,
-    scrollTop: null,
-    scrollToPos: null,
-    id: ++nextOpId
+    'viewChanged': false,
+    'startHeight': cm.doc.height,
+    'forceUpdate': false,
+    'updateInput': null,
+    'typing': false,
+    'changeObjs': null,
+    'origin': null,
+    'cursorActivity': false,
+    'selectionChanged': false,
+    'updateMaxLine': false,
+    'scrollLeft': null,
+    'scrollTop': null,
+    'scrollToPos': null,
+    'id': ++nextOpId
   };
   if (!delayedCallbackDepth++) delayedCallbacks = [];
 }
@@ -205,8 +205,8 @@ endOperation(cm) {
       && (op.scrollToPos.from.line < display.viewFrom || op.scrollToPos.to.line >=
       display.viewTo) || display.maxLineChanged && cm.options.lineWrapping) {
     var updated = updateDisplay(cm, {
-      top: op.scrollTop,
-      ensure: op.scrollToPos
+      'top': op.scrollTop,
+      'ensure': op.scrollToPos
     }, op.forceUpdate);
     if (cm.display.scroller.offsetHeight) cm.doc.scrollTop =
         cm.display.scroller.scrollTop;
@@ -217,13 +217,13 @@ endOperation(cm) {
 
 
   if (op.scrollTop != null && display.scroller.scrollTop != op.scrollTop) {
-    var top = Math.max(0, Math.min(display.scroller.scrollHeight -
+    var top = math.max(0, math.min(display.scroller.scrollHeight -
         display.scroller.clientHeight, op.scrollTop));
     display.scroller.scrollTop = display.scrollbarV.scrollTop = doc.scrollTop =
         top;
   }
   if (op.scrollLeft != null && display.scroller.scrollLeft != op.scrollLeft) {
-    var left = Math.max(0, Math.min(display.scroller.scrollWidth -
+    var left = math.max(0, math.min(display.scroller.scrollWidth -
         display.scroller.clientWidth, op.scrollLeft));
     display.scroller.scrollLeft = display.scrollbarH.scrollLeft = doc.scrollLeft
         = left;
@@ -277,6 +277,7 @@ runInOp(cm, f) {
 
 operation(cm, f) {
   return () {
+    var arguments;  // XXX
     if (cm.curOp) return f.apply(cm, arguments);
     startOperation(cm);
     try {
@@ -290,6 +291,7 @@ operation(cm, f) {
 methodOp(f) {
   return () {
     var that; // XXX: this
+    var arguments; // XXX
     if (that.curOp) return f.apply(that, arguments);
     startOperation(that);
     try {
@@ -303,6 +305,7 @@ methodOp(f) {
 docMethodOp(f) {
   return () {
     var that; // XXX: this
+    var arguments; // XXX
     var cm = that.cm;
     if (!cm || cm.curOp) return f.apply(that, arguments);
     startOperation(cm);
@@ -424,8 +427,8 @@ viewCuttingPoint(cm, oldN, newN, dir) {
     index: index,
     lineN: newN
   };
-  for (var i = 0,
-      n = cm.display.viewFrom; i < index; i++) n += view[i].size;
+  var n = cm.display.viewFrom;
+  for (var i = 0; i < index; i++) n += view[i].size;
   if (n != oldN) {
     if (dir > 0) {
       if (index == view.length - 1) return null;
@@ -443,8 +446,8 @@ viewCuttingPoint(cm, oldN, newN, dir) {
     index += dir;
   }
   return {
-    index: index,
-    lineN: newN
+    'index': index,
+    'lineN': newN
   };
 }
 
@@ -553,14 +556,14 @@ readInput(cm) {
     if (same < prevInput.length) {
       from = newPos(from.line, from.ch - (prevInput.length - same));
     } else if (cm.state.overwrite && range.empty() && !cm.state.pasteIncoming)
-        to = newPos(to.line, Math.min(getLine(doc, to.line).text.length, to.ch + lst(
+        to = newPos(to.line, math.min(getLine(doc, to.line).text.length, to.ch + lst(
         textLines).length));
     var updateInput = cm.curOp.updateInput;
     var changeEvent = {
-      from: from,
-      to: to,
-      text: multiPaste ? [textLines[i]] : textLines,
-      origin: cm.state.pasteIncoming ? "paste" : cm.state.cutIncoming ? "cut" :
+      'from': from,
+      'to': to,
+      'text': multiPaste ? [textLines[i]] : textLines,
+      'origin': cm.state.pasteIncoming ? "paste" : cm.state.cutIncoming ? "cut" :
           "+input"
     };
     makeChange(cm.doc, changeEvent);
@@ -836,8 +839,8 @@ posFromMouse(cm, e, liberal, forRect) {
       ).text).length == coords.ch) {
     var colDiff = countColumn(line, line.length, cm.options.tabSize) -
         line.length;
-    coords = newPos(coords.line, Math.round((x - paddingH(cm.display).left) /
-        charWidth(cm.display)) - colDiff);
+    coords = newPos(coords.line, ((x - paddingH(cm.display).left) /
+        charWidth(cm.display)).round() - colDiff);
   }
   return coords;
 }
@@ -923,7 +926,7 @@ leftButtonStartDrag(cm, e, start) {
     cm.state.draggingText = false;
     _off(document, "mouseup", dragEnd);
     _off(display.scroller, "drop", dragEnd);
-    if (Math.abs(e.clientX - e2.clientX) + Math.abs(e.clientY - e2.clientY) <
+    if ((e.clientX - e2.clientX).abs() + (e.clientY - e2.clientY).abs() <
         10) {
       e_preventDefault(e2);
       extendSelection(cm.doc, start);
@@ -1012,10 +1015,10 @@ leftButtonSelect(cm, e, start, type, addNew) {
       var startCol = countColumn(getLine(doc, start.line).text, start.ch,
           tabSize);
       var posCol = countColumn(getLine(doc, pos.line).text, pos.ch, tabSize);
-      var left = Math.min(startCol, posCol),
-          right = Math.max(startCol, posCol);
-      for (var line = Math.min(start.line, pos.line),
-          end = Math.min(cm.lastLine(), Math.max(start.line, pos.line)); line <=
+      var left = math.min(startCol, posCol),
+          right = math.max(startCol, posCol);
+      for (var line = math.min(start.line, pos.line),
+          end = math.min(cm.lastLine(), math.max(start.line, pos.line)); line <=
               end; line++) {
         var text = getLine(doc, line).text,
             leftPos = findColumn(text, left, tabSize);

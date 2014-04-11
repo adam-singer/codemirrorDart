@@ -445,13 +445,13 @@ class Doc {
         this.modeOption, from);
     if (options.sharedHist) copy.history = this.history;
     (this.linked || (this.linked = [])).push({
-      doc: copy,
-      sharedHist: options.sharedHist
+      'doc': copy,
+      'sharedHist': options.sharedHist
     });
     copy.linked = [{
-        doc: this,
-        isParent: true,
-        sharedHist: options.sharedHist
+        'doc': this,
+        'isParent': true,
+        'sharedHist': options.sharedHist
       }];
     copySharedMarkers(copy, findSharedMarkers(this));
     return copy;
@@ -494,10 +494,10 @@ class Doc {
     }
   }
   on(type, f) {
-    on(this, type, f);
+    _on(this, type, f);
   }
   off(type, f) {
-    off(this, type, f);
+    _off(this, type, f);
   }
   chunkSize() {
     return this.size;
@@ -508,7 +508,7 @@ class Doc {
       var child = this.children[i],
           sz = child.chunkSize();
       if (at < sz) {
-        var rm = Math.min(n, sz - at),
+        var rm = math.min(n, sz - at),
             oldHeight = child.height;
         child.removeInner(at, rm);
         this.height -= oldHeight - child.height;
@@ -585,7 +585,7 @@ class Doc {
       var child = this.children[i],
           sz = child.chunkSize();
       if (at < sz) {
-        var used = Math.min(n, sz - at);
+        var used = math.min(n, sz - at);
         if (child.iterN(at, used, op)) return true;
         if ((n -= used) == 0) break;
         at = 0;

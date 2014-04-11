@@ -290,7 +290,7 @@ addLineWidget(cm, handle, node, options) {
     if (widget.insertAt == null) {
       widgets.push(widget);
     } else {
-      widgets.splice(Math.min(widgets.length - 1, Math.max(0, widget.insertAt)),
+      widgets.splice(math.min(widgets.length - 1, math.max(0, widget.insertAt)),
           0, widget);
     }
     widget.line = line;
@@ -381,7 +381,7 @@ runMode(cm, text, mode, state, f, lineClasses, forceToEnd) {
   }
   while (curStart < stream.pos) {
 
-    var pos = Math.min(stream.pos, curStart + 50000);
+    var pos = math.min(stream.pos, curStart + 50000);
     f(pos, curStyle);
     curStart = pos;
   }
@@ -409,7 +409,7 @@ highlightLine(cm, line, state, forceToEnd) {
         var i_end = st[i];
         if (i_end > end) st.splice(i, 1, end, st[i + 1], i_end);
         i += 2;
-        at = Math.min(end, i_end);
+        at = math.min(end, i_end);
       }
       if (!style) return;
       if (overlay.opaque) {
@@ -684,7 +684,7 @@ insertLineContent(line, builder, styles) {
     }
     if (pos >= len) break;
 
-    var upto = Math.min(len, nextChange);
+    var upto = math.min(len, nextChange);
     while (true) {
       if (text) {
         var end = pos + text.length;
@@ -1065,7 +1065,7 @@ iterateBidiSections(order, from, to, f) {
   for (var i = 0; i < order.length; ++i) {
     var part = order[i];
     if (part.from < to && part.to > from || from == to && part.to == from) {
-      f(Math.max(part.from, from), Math.min(part.to, to), part.level == 1 ?
+      f(math.max(part.from, from), math.min(part.to, to), part.level == 1 ?
           "rtl" : "ltr");
       found = true;
     }
@@ -1149,7 +1149,7 @@ moveInLine(line, pos, dir, byUnit) {
   return pos;
 }
 
-moveVisually(line, start, dir, byUnit) {
+moveVisually(line, start, dir, [byUnit]) {
   var bidi = getOrder(line);
   if (!bidi) return moveLogically(line, start, dir, byUnit);
   var pos = getBidiPartAt(bidi, start),

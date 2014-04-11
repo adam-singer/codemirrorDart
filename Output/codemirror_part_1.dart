@@ -36,7 +36,7 @@ wrappingChanged(cm) {
 estimateHeight(cm) {
   var th = textHeight(cm.display),
       wrapping = cm.options.lineWrapping;
-  var perLine = wrapping && Math.max(5, cm.display.scroller.clientWidth /
+  var perLine = wrapping && math.max(5, cm.display.scroller.clientWidth /
       charWidth(cm.display) - 3);
   return (line) {
     if (lineIsHidden(cm.doc, line)) return 0;
@@ -45,8 +45,7 @@ estimateHeight(cm) {
     if (line.widgets) for (var i = 0; i < line.widgets.length; i++) {
       if (line.widgets[i].height) widgetsHeight += line.widgets[i].height;
     }
-
-    if (wrapping) return widgetsHeight + (Math.ceil(line.text.length / perLine)
+    if (wrapping) return widgetsHeight + ((line.text.length / perLine).ceil()
         || 1) * th; else return widgetsHeight + th;
   };
 }
@@ -86,7 +85,8 @@ updateGutters(cm) {
   var gutters = cm.display.gutters,
       specs = cm.options.gutters;
   removeChildren(gutters);
-  for (var i = 0; i < specs.length; ++i) {
+  var i = 0;
+  for (; i < specs.length; ++i) {
     var gutterClass = specs[i];
     var gElt = gutters.appendChild(elt("div", null, "CodeMirror-gutter " +
         gutterClass));
@@ -153,17 +153,17 @@ setGuttersForLineNumbers(options) {
 measureForScrollbars(cm) {
   var scroll = cm.display.scroller;
   return {
-    clientHeight: scroll.clientHeight,
-    barHeight: cm.display.scrollbarV.clientHeight,
-    scrollWidth: scroll.scrollWidth,
-    clientWidth: scroll.clientWidth,
-    barWidth: cm.display.scrollbarH.clientWidth,
-    docHeight: Math.round(cm.doc.height + paddingVert(cm.display))
+    'clientHeight': scroll.clientHeight,
+    'barHeight': cm.display.scrollbarV.clientHeight,
+    'scrollWidth': scroll.scrollWidth,
+    'clientWidth': scroll.clientWidth,
+    'barWidth': cm.display.scrollbarH.clientWidth,
+    'docHeight': (cm.doc.height + paddingVert(cm.display)).round()
   };
 }
 
-updateScrollbars(cm, measure) {
-  if (!measure) measure = measureForScrollbars(cm);
+updateScrollbars(cm, [measure]) {
+  if (measure == null) measure = measureForScrollbars(cm);
   var d = cm.display;
   var scrollHeight = measure.docHeight + scrollerCutOff;
   var needsH = measure.scrollWidth > measure.clientWidth;
@@ -172,7 +172,7 @@ updateScrollbars(cm, measure) {
     d.scrollbarV.style.display = "block";
     d.scrollbarV.style.bottom = needsH ? scrollbarWidth(d.measure) + "px" : "0";
 
-    d.scrollbarV.firstChild.style.height = Math.max(0, scrollHeight -
+    d.scrollbarV.firstChild.style.height = math.max(0, scrollHeight -
         measure.clientHeight + (measure.barHeight || d.scrollbarV.clientHeight)) + "px";
   } else {
     d.scrollbarV.style.display = "";
@@ -214,7 +214,7 @@ updateScrollbars(cm, measure) {
 visibleLines(display, doc, viewPort) {
   var top = viewPort && viewPort.top != null ? viewPort.top :
       display.scroller.scrollTop;
-  top = Math.floor(top - paddingTop(display));
+  top = (top - paddingTop(display)).floor();
   var bottom = viewPort && viewPort.bottom != null ? viewPort.bottom : top +
       display.wrapper.clientHeight;
 
@@ -230,7 +230,7 @@ visibleLines(display, doc, viewPort) {
       to: lineAtHeight(doc, heightAtLine(getLine(doc, ensureFrom)) +
           display.wrapper.clientHeight)
     };
-    if (Math.min(ensureTo, doc.lastLine()) >= to) return {
+    if (math.min(ensureTo, doc.lastLine()) >= to) return {
       from: lineAtHeight(doc, heightAtLine(getLine(doc, ensureTo)) -
           display.wrapper.clientHeight),
       to: ensureTo
@@ -273,7 +273,7 @@ maybeUpdateLineNumberWidth(cm) {
     var innerW = test.firstChild.offsetWidth,
         padding = test.offsetWidth - innerW;
     display.lineGutter.style.width = "";
-    display.lineNumInnerWidth = Math.max(innerW, display.lineGutter.offsetWidth
+    display.lineNumInnerWidth = math.max(innerW, display.lineGutter.offsetWidth
         - padding);
     display.lineNumWidth = display.lineNumInnerWidth + padding;
     display.lineNumChars = display.lineNumInnerWidth ? last.length : -1;
@@ -323,7 +323,7 @@ updateDisplay(cm, viewPort, forced) {
 
 
     if (viewPort && viewPort.top != null) viewPort = {
-      top: Math.min(barMeasure.docHeight - scrollerCutOff -
+      'top': math.min(barMeasure.docHeight - scrollerCutOff -
           barMeasure.clientHeight, viewPort.top)
     };
 
@@ -347,23 +347,23 @@ updateDisplayInner(cm, visible, forced) {
       doc = cm.doc;
   if (!display.wrapper.offsetWidth) {
     resetView(cm);
-    return;
+    return false;
   }
 
 
   if (!forced && visible.from >= display.viewFrom && visible.to <=
-      display.viewTo && countDirtyView(cm) == 0) return;
+      display.viewTo && countDirtyView(cm) == 0) return false;
 
   if (maybeUpdateLineNumberWidth(cm)) resetView(cm);
   var dims = getDimensions(cm);
 
 
   var end = doc.first + doc.size;
-  var from = Math.max(visible.from - cm.options.viewportMargin, doc.first);
-  var to = Math.min(end, visible.to + cm.options.viewportMargin);
-  if (display.viewFrom < from && from - display.viewFrom < 20) from = Math.max(
+  var from = math.max(visible.from - cm.options.viewportMargin, doc.first);
+  var to = math.min(end, visible.to + cm.options.viewportMargin);
+  if (display.viewFrom < from && from - display.viewFrom < 20) from = math.max(
       doc.first, display.viewFrom);
-  if (display.viewTo > to && display.viewTo - to < 20) to = Math.min(end,
+  if (display.viewTo > to && display.viewTo - to < 20) to = math.min(end,
       display.viewTo);
   if (sawCollapsedSpans) {
     from = visualLineNo(cm.doc, from);
@@ -379,7 +379,7 @@ updateDisplayInner(cm, visible, forced) {
   cm.display.mover.style.top = display.viewOffset + "px";
 
   var toUpdate = countDirtyView(cm);
-  if (!different && toUpdate == 0 && !forced) return;
+  if (!different && toUpdate == 0 && !forced) return false;
 
 
 
@@ -412,18 +412,18 @@ adjustContentWidth(cm) {
   var width = measureChar(cm, display.maxLine, display.maxLine.text.length
       ).left;
   display.maxLineChanged = false;
-  var minWidth = Math.max(0, width + 3);
-  var maxScrollLeft = Math.max(0, display.sizer.offsetLeft + minWidth +
+  var minWidth = math.max(0, width + 3);
+  var maxScrollLeft = math.max(0, display.sizer.offsetLeft + minWidth +
       scrollerCutOff - display.scroller.clientWidth);
   display.sizer.style.minWidth = minWidth + "px";
-  if (maxScrollLeft < cm.doc.scrollLeft) setScrollLeft(cm, Math.min(
+  if (maxScrollLeft < cm.doc.scrollLeft) setScrollLeft(cm, math.min(
       display.scroller.scrollLeft, maxScrollLeft), true);
 }
 
 setDocumentHeight(cm, measure) {
   cm.display.sizer.style.minHeight = cm.display.heightForcer.style.top =
       measure.docHeight + "px";
-  cm.display.gutters.style.height = Math.max(measure.docHeight,
+  cm.display.gutters.style.height = math.max(measure.docHeight,
       measure.clientHeight - scrollerCutOff) + "px";
 }
 
@@ -479,11 +479,11 @@ getDimensions(cm) {
     width[cm.options.gutters[i]] = n.offsetWidth;
   }
   return {
-    fixedPos: compensateForHScroll(d),
-    gutterTotalWidth: d.gutters.offsetWidth,
-    gutterLeft: left,
-    gutterWidth: width,
-    wrapperWidth: d.wrapper.clientWidth
+    'fixedPos': compensateForHScroll(d),
+    'gutterTotalWidth': d.gutters.offsetWidth,
+    'gutterLeft': left,
+    'gutterWidth': width,
+    'wrapperWidth': d.wrapper.clientWidth
   };
 }
 

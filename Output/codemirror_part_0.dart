@@ -154,7 +154,7 @@ copyState(mode, state) {
   var nstate = {};
   for (var n in state) {
     var val = state[n];
-    if (val is Array) val = val.concat([]);
+    if (val is List) val = new List.from(val);
     nstate[n] = val;
   }
   return nstate;

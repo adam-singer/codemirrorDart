@@ -162,8 +162,8 @@ extendSelection(doc, head, other, options) {
 }
 
 extendSelections(doc, heads, options) {
-  for (var out = [],
-      i = 0; i < doc.sel.ranges.length; i++) out[i] = extendRange(doc,
+  var out = [];
+  for (var i = 0; i < doc.sel.ranges.length; i++) out[i] = extendRange(doc,
           doc.sel.ranges[i], heads[i], null);
   var newSel = normalizeSelection(out, doc.sel.primIndex);
   _setSelection(doc, newSel, options);
@@ -212,7 +212,7 @@ setSelectionReplaceHistory(doc, sel, options) {
 _setSelection(doc, sel, options) {
   if (options && options.origin && doc.cm) doc.cm.curOp.origin = options.origin;
   setSelectionNoUndo(doc, sel, options);
-  addSelectionToHistory(doc, doc.sel, doc.cm ? doc.cm.curOp.id : NaN, options);
+  addSelectionToHistory(doc, doc.sel, doc.cm ? doc.cm.curOp.id : double.NAN, options);
 }
 
 setSelectionNoUndo(doc, sel, options) {
@@ -339,9 +339,9 @@ updateSelection(cm) {
     var headPos = cursorCoords(cm, doc.sel.primary().head, "div");
     var wrapOff = display.wrapper.getBoundingClientRect(),
         lineOff = display.lineDiv.getBoundingClientRect();
-    var top = Math.max(0, Math.min(display.wrapper.clientHeight - 10,
+    var top = math.max(0, math.min(display.wrapper.clientHeight - 10,
         headPos.top + lineOff.top - wrapOff.top));
-    var left = Math.max(0, Math.min(display.wrapper.clientWidth - 10,
+    var left = math.max(0, math.min(display.wrapper.clientWidth - 10,
         headPos.left + lineOff.left - wrapOff.left));
     display.inputDiv.style.top = top + "px";
     display.inputDiv.style.left = left + "px";
@@ -357,7 +357,7 @@ drawSelectionCursor(cm, range, output) {
   var cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor"));
   cursor.style.left = pos.left + "px";
   cursor.style.top = pos.top + "px";
-  cursor.style.height = Math.max(0, pos.bottom - pos.top) *
+  cursor.style.height = math.max(0, pos.bottom - pos.top) *
       cm.options.cursorHeight + "px";
 
   if (pos.other) {
@@ -381,8 +381,8 @@ drawSelectionRange(cm, range, output) {
 
   add(left, top, width, bottom) {
     if (top < 0) top = 0;
-    top = Math.round(top);
-    bottom = Math.round(bottom);
+    top = top.round();
+    bottom = bottom.round();
     fragment.appendChild(elt("div", null, "CodeMirror-selected",
         "position: absolute; left: " + left + "px; top: " + top + "px; width: " + (width
         == null ? rightSide - left : width) + "px; height: " + (bottom - top) + "px"));
@@ -488,7 +488,7 @@ highlightWorker(cm) {
   var state = copyState(doc.mode, getStateBefore(cm, doc.frontier));
 
   runInOp(cm, () {
-    doc.iter(doc.frontier, Math.min(doc.first + doc.size, cm.display.viewTo +
+    doc.iter(doc.frontier, math.min(doc.first + doc.size, cm.display.viewTo +
         500), (line) {
       if (doc.frontier >= cm.display.viewFrom) {
         var oldStyles = line.styles;
@@ -570,8 +570,8 @@ paddingH(display) {
   var style = window.getComputedStyle ? window.getComputedStyle(e) :
       e.currentStyle;
   return display.cachedPaddingH = {
-    left: parseInt(style.paddingLeft),
-    right: parseInt(style.paddingRight)
+    'left': parseInt(style.paddingLeft),
+    'right': parseInt(style.paddingRight)
   };
 }
 
@@ -587,7 +587,7 @@ ensureLineHeights(cm, lineView, rect) {
       for (var i = 0; i < rects.length - 1; i++) {
         var cur = rects[i],
             next = rects[i + 1];
-        if (Math.abs(cur.bottom - next.bottom) > 2) heights.push((cur.bottom +
+        if ((cur.bottom - next.bottom).abs() > 2) heights.push((cur.bottom +
             next.top) / 2 - rect.top);
       }
     }
@@ -597,19 +597,19 @@ ensureLineHeights(cm, lineView, rect) {
 
 mapFromLineView(lineView, line, lineN) {
   if (lineView.line == line) return {
-    map: lineView.measure.map,
-    cache: lineView.measure.cache
+    'map': lineView.measure.map,
+    'cache': lineView.measure.cache
   };
   for (var i = 0; i < lineView.rest.length; i++) if (lineView.rest[i] == line)
       return {
-    map: lineView.measure.maps[i],
-    cache: lineView.measure.caches[i]
+    'map': lineView.measure.maps[i],
+    'cache': lineView.measure.caches[i]
   };
   for (var i = 0; i < lineView.rest.length; i++) if (_lineNo(lineView.rest[i]) >
       lineN) return {
-    map: lineView.measure.maps[i],
-    cache: lineView.measure.caches[i],
-    before: true
+    'map': lineView.measure.maps[i],
+    'cache': lineView.measure.caches[i],
+    'before': true
   };
 }
 
@@ -624,7 +624,7 @@ updateExternalMeasurement(cm, line) {
   return view;
 }
 
-measureChar(cm, line, ch, bias) {
+measureChar(cm, line, ch, [bias]) {
   return measureCharPrepared(cm, prepareMeasureForLine(cm, line), ch, bias);
 }
 
@@ -684,11 +684,12 @@ measureCharInner(cm, prepared, ch, bias) {
   var map = prepared.map;
 
   var node, start, end, collapse;
+  var mStart, mEnd;
 
 
   for (var i = 0; i < map.length; i += 3) {
-    var mStart = map[i],
-        mEnd = map[i + 1];
+    mStart = map[i];
+    mEnd = map[i + 1];
     if (ch < mStart) {
       start = 0;
       end = 1;
@@ -763,7 +764,8 @@ measureCharInner(cm, prepared, ch, bias) {
   var top,
       bot = (rect.bottom + rect.top) / 2 - prepared.rect.top;
   var heights = prepared.view.measure.heights;
-  for (var i = 0; i < heights.length - 1; i++) if (bot < heights[i]) break;
+  var i = 0;
+  for (; i < heights.length - 1; i++) if (bot < heights[i]) break;
   top = i ? heights[i - 1] : 0;
   bot = heights[i];
   var result = {

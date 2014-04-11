@@ -2,14 +2,14 @@ part of codemirror.dart;
 
 
 gutterEvent(cm, e, type, prevent, signalfn) {
-  var Mx, mY;
+  var mX, mY;
   try {
     mX = e.clientX;
     mY = e.clientY;
   } catch (e) {
     return false;
   }
-  if (mX >= Math.floor(cm.display.gutters.getBoundingClientRect().right)) return
+  if (mX >= (cm.display.gutters.getBoundingClientRect().right).floor()) return
       false;
   if (prevent) e_preventDefault(e);
 
@@ -119,10 +119,10 @@ onDragStart(cm, e) {
 }
 
 setScrollTop(cm, val) {
-  if (Math.abs(cm.doc.scrollTop - val) < 2) return;
+  if ((cm.doc.scrollTop - val).abs() < 2) return;
   cm.doc.scrollTop = val;
   if (!gecko) updateDisplay(cm, {
-    top: val
+    'top': val
   });
   if (cm.display.scroller.scrollTop != val) cm.display.scroller.scrollTop = val;
   if (cm.display.scrollbarV.scrollTop != val) cm.display.scrollbarV.scrollTop =
@@ -132,9 +132,9 @@ setScrollTop(cm, val) {
 }
 
 setScrollLeft(cm, val, isScroller) {
-  if (isScroller ? val == cm.doc.scrollLeft : Math.abs(cm.doc.scrollLeft - val)
+  if (isScroller ? val == cm.doc.scrollLeft : (cm.doc.scrollLeft - val).abs()
       < 2) return;
-  val = Math.min(val, cm.display.scroller.scrollWidth -
+  val = math.min(val, cm.display.scroller.scrollWidth -
       cm.display.scroller.clientWidth);
   cm.doc.scrollLeft = val;
   alignHorizontally(cm);
@@ -180,9 +180,9 @@ onScrollWheel(cm, e) {
 
 
   if (dx && !gecko && !presto && wheelPixelsPerUnit != null) {
-    if (dy) setScrollTop(cm, Math.max(0, Math.min(scroll.scrollTop + dy *
+    if (dy) setScrollTop(cm, math.max(0, math.min(scroll.scrollTop + dy *
         wheelPixelsPerUnit, scroll.scrollHeight - scroll.clientHeight)));
-    setScrollLeft(cm, Math.max(0, Math.min(scroll.scrollLeft + dx *
+    setScrollLeft(cm, math.max(0, math.min(scroll.scrollLeft + dx *
         wheelPixelsPerUnit, scroll.scrollWidth - scroll.clientWidth)));
     e_preventDefault(e);
     display.wheelStartX = null;
@@ -195,11 +195,11 @@ onScrollWheel(cm, e) {
     var pixels = dy * wheelPixelsPerUnit;
     var top = cm.doc.scrollTop,
         bot = top + display.wrapper.clientHeight;
-    if (pixels < 0) top = Math.max(0, top + pixels - 50); else bot = Math.min(
+    if (pixels < 0) top = math.max(0, top + pixels - 50); else bot = math.min(
         cm.doc.height, bot + pixels + 50);
     updateDisplay(cm, {
-      top: top,
-      bottom: bot
+      'top': top,
+      'bottom': bot
     });
   }
 
@@ -759,7 +759,7 @@ makeChangeSingleDocInEditor(cm, change, spans) {
   }
 
 
-  doc.frontier = Math.min(doc.frontier, from.line);
+  doc.frontier = math.min(doc.frontier, from.line);
   startWorker(cm, 400);
 
   var lendiff = change.text.length - (to.line - from.line) - 1;
@@ -770,11 +770,11 @@ makeChangeSingleDocInEditor(cm, change, spans) {
 
   if (hasHandler(cm, "change") || hasHandler(cm, "changes"))
       (cm.curOp.changeObjs || (cm.curOp.changeObjs = [])).push({
-    from: from,
-    to: to,
-    text: change.text,
-    removed: change.removed,
-    origin: change.origin
+    'from': from,
+    'to': to,
+    'text': change.text,
+    'removed': change.removed,
+    'origin': change.origin
   });
 }
 
@@ -787,10 +787,10 @@ replaceRange(doc, code, from, to, origin) {
   }
   if (typeOfReplacement(code, "string")) code = splitLines(code);
   makeChange(doc, {
-    from: from,
-    to: to,
-    text: code,
-    origin: origin
+    'from': from,
+    'to': to,
+    'text': code,
+    'origin': origin
   });
 }
 
@@ -818,18 +818,18 @@ scrollPosIntoView(cm, pos, end, margin) {
     var changed = false,
         coords = cursorCoords(cm, pos);
     var endCoords = !end || end == pos ? coords : cursorCoords(cm, end);
-    var scrollPos = calculateScrollPos(cm, Math.min(coords.left, endCoords.left
-        ), Math.min(coords.top, endCoords.top) - margin, Math.max(coords.left,
-        endCoords.left), Math.max(coords.bottom, endCoords.bottom) + margin);
+    var scrollPos = calculateScrollPos(cm, math.min(coords.left, endCoords.left
+        ), math.min(coords.top, endCoords.top) - margin, math.max(coords.left,
+        endCoords.left), math.max(coords.bottom, endCoords.bottom) + margin);
     var startTop = cm.doc.scrollTop,
         startLeft = cm.doc.scrollLeft;
     if (scrollPos.scrollTop != null) {
       setScrollTop(cm, scrollPos.scrollTop);
-      if (Math.abs(cm.doc.scrollTop - startTop) > 1) changed = true;
+      if ((cm.doc.scrollTop - startTop).abs() > 1) changed = true;
     }
     if (scrollPos.scrollLeft != null) {
       setScrollLeft(cm, scrollPos.scrollLeft);
-      if (Math.abs(cm.doc.scrollLeft - startLeft) > 1) changed = true;
+      if ((cm.doc.scrollLeft - startLeft).abs() > 1) changed = true;
     }
     if (!changed) return coords;
   }
@@ -950,11 +950,11 @@ indentLine(cm, n, how, aggressive) {
   } else if (typeOfReplacement(how, "number")) {
     indentation = curSpace + how;
   }
-  indentation = Math.max(0, indentation);
+  indentation = math.max(0, indentation);
 
   var indentString = "",
       pos = 0;
-  if (cm.options.indentWithTabs) for (var i = Math.floor(indentation / tabSize);
+  if (cm.options.indentWithTabs) for (var i = (indentation / tabSize).floor();
       i; --i) {
     pos += tabSize;
     indentString += "\t";
@@ -1070,7 +1070,7 @@ findPosV(cm, pos, dir, unit) {
       x = pos.left,
       y;
   if (unit == "page") {
-    var pageSize = Math.min(cm.display.wrapper.clientHeight, window.innerHeight
+    var pageSize = math.min(cm.display.wrapper.clientHeight, window.innerHeight
         || document.documentElement.clientHeight);
     y = pos.top + dir * (pageSize - (dir < 0 ? 1.5 : .5) * textHeight(cm.display
         ));
