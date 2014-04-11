@@ -41,7 +41,7 @@ markText(doc, from, to, options, type) {
   if (marker.collapsed) {
     if (conflictingCollapsedRange(doc, from.line, from, to, marker) || from.line
         != to.line && conflictingCollapsedRange(doc, to.line, from, to, marker)) throw
-        new Error("Inserting collapsed marker partially overlapping an existing one");
+        new Exception("Inserting collapsed marker partially overlapping an existing one");
     sawCollapsedSpans = true;
   }
 
@@ -339,14 +339,14 @@ extractLineClasses(type, output) {
 
 callBlankLine(mode, state) {
   if (mode.blankLine) return mode.blankLine(state);
-  if (!mode.innerMode) return;
+  if (!mode.innerMode) return null;
   var inner = CodeMirror.innerMode(mode, state);
   if (inner.mode.blankLine) return inner.mode.blankLine(inner.state);
 }
 
 readToken(mode, stream, state) {
   var style = mode.token(stream, state);
-  if (stream.pos <= stream.start) throw new Error("Mode " + mode.name +
+  if (stream.pos <= stream.start) throw new Exception("Mode " + mode.name +
       " failed to advance stream.");
   return style;
 }
@@ -521,7 +521,7 @@ defaultSpecialCharPlaceholder(ch) {
 }
 
 buildToken(builder, text, style, startStyle, endStyle, title) {
-  if (!text) return;
+  if (!text) return null;
   var special = builder.cm.options.specialChars,
       mustWrap = false;
   if (!special.test(text)) {
@@ -790,7 +790,7 @@ linkedDocs(doc, f, [sharedHistOnly]) {
 }
 
 attachDoc(cm, doc) {
-  if (doc.cm) throw new Error("This document is already in use.");
+  if (doc.cm) throw new Exception("This document is already in use.");
   cm.doc = doc;
   doc.cm = cm;
   estimateLineHeights(cm);
@@ -802,7 +802,7 @@ attachDoc(cm, doc) {
 
 getLine(doc, n) {
   n -= doc.first;
-  if (n < 0 || n >= doc.size) throw new Error("There is no line " + (n +
+  if (n < 0 || n >= doc.size) throw new Exception("There is no line " + (n +
       doc.first) + " in the document.");
   for (var chunk = doc; !chunk.lines; ) {
     for (var i = 0; ; ++i) {

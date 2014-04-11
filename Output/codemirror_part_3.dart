@@ -756,7 +756,7 @@ registerEventHandlers(cm) {
 
 
 
-    if (webkit && !cm.state.fakedLastChar && !(new Date() -
+    if (webkit && !cm.state.fakedLastChar && !(currentTimeInMs() -
         cm.state.lastMiddleDown < 200)) {
       var start = d.input.selectionStart,
           end = d.input.selectionEnd;

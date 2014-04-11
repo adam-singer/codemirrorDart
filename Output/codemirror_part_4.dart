@@ -228,7 +228,7 @@ onScrollWheel(cm, e) {
   }
 }
 
-doHandleBinding(cm, bound, dropShift) {
+doHandleBinding(cm, bound, [dropShift]) {
   if (typeOfReplacement(bound, "string")) {
     bound = commands[bound];
     if (!bound) return false;
@@ -689,28 +689,28 @@ makeChangeSingleDoc(doc, change, selAfter, spans) {
 
   if (change.to.line < doc.first) {
     shiftDoc(doc, change.text.length - 1 - (change.to.line - change.from.line));
-    return;
+    return null;
   }
-  if (change.from.line > doc.lastLine()) return;
+  if (change.from.line > doc.lastLine()) return null;
 
 
   if (change.from.line < doc.first) {
     var shift = change.text.length - 1 - (doc.first - change.from.line);
     shiftDoc(doc, shift);
     change = {
-      from: newPos(doc.first, 0),
-      to: newPos(change.to.line + shift, change.to.ch),
-      text: [lst(change.text)],
-      origin: change.origin
+      'from': newPos(doc.first, 0),
+      'to': newPos(change.to.line + shift, change.to.ch),
+      'text': [lst(change.text)],
+      'origin': change.origin
     };
   }
   var last = doc.lastLine();
   if (change.to.line > last) {
     change = {
-      from: change.from,
-      to: newPos(last, getLine(doc, last).text.length),
-      text: [change.text[0]],
-      origin: change.origin
+      'from': change.from,
+      'to': newPos(last, getLine(doc, last).text.length),
+      'text': [change.text[0]],
+      'origin': change.origin
     };
   }
 
@@ -913,7 +913,7 @@ resolveScrollToPos(cm) {
   }
 }
 
-indentLine(cm, n, how, aggressive) {
+indentLine(cm, n, how, [aggressive]) {
   var doc = cm.doc,
       state;
   if (how == null) how = "add";
@@ -1026,7 +1026,7 @@ findPosH(doc, pos, dir, unit, visually) {
     line = l;
     return lineObj = getLine(doc, l);
   }
-  moveOnce(boundToLine) {
+  moveOnce([boundToLine]) {
     var next = (visually ? moveVisually : moveLogically)(lineObj, ch, dir, true
         );
     if (next == null) {

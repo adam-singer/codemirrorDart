@@ -293,7 +293,7 @@ compensateForHScroll(display) {
       display.sizer.getBoundingClientRect().left;
 }
 
-updateDisplay(cm, viewPort, [forced]) {
+updateDisplay(cm, [viewPort, forced]) {
   var oldFrom = cm.display.viewFrom,
       oldTo = cm.display.viewTo,
       updated;
