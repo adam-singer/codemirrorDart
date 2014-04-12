@@ -202,6 +202,7 @@ conflictingCollapsedRange(doc, lineNo, from, to, marker) {
     var fromCmp = cmp(found.from, from) || extraLeft(sp.marker) - extraLeft(
         marker);
     var toCmp = cmp(found.to, to) || extraRight(sp.marker) - extraRight(marker);
+    
     if (fromCmp >= 0 && toCmp <= 0 || fromCmp <= 0 && toCmp >= 0) continue;
     if (fromCmp <= 0 && (cmp(found.to, from) || extraRight(sp.marker) -
         extraLeft(marker)) > 0 || fromCmp >= 0 && (cmp(found.from, to) || extraLeft(

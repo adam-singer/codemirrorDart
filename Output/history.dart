@@ -87,8 +87,8 @@ addChangeToHistory(doc, change, selAfter, opId) {
     var before = lst(hist.done);
     if (!before || !before.ranges) pushSelectionToHistory(doc.sel, hist.done);
     cur = {
-      changes: [historyChangeFromChange(doc, change)],
-      generation: hist.generation
+      'changes': [historyChangeFromChange(doc, change)],
+      'generation': hist.generation
     };
     hist.done.push(cur);
     while (hist.done.length > hist.undoDepth) {
@@ -108,7 +108,7 @@ addChangeToHistory(doc, change, selAfter, opId) {
 selectionEventCanBeMerged(doc, origin, prev, sel) {
   var ch = origin.charAt(0);
   return ch == "*" || ch == "+" && prev.ranges.length == sel.ranges.length &&
-      prev.somethingSelected() == sel.somethingSelected() && new Date() -
+      prev.somethingSelected() == sel.somethingSelected() && currentTimeInMs() -
       doc.history.lastSelTime <= (doc.cm ? doc.cm.options.historyEventDelay : 500);
 }
 
@@ -163,8 +163,8 @@ removeClearedSpans(spans) {
 getOldSpans(doc, change) {
   var found = change["spans_" + doc.id];
   if (!found) return null;
-  for (var i = 0,
-      nw = []; i < change.text.length; ++i) nw.push(removeClearedSpans(found[i])
+  var nw = [];
+  for (var i = 0; i < change.text.length; ++i) nw.add(removeClearedSpans(found[i])
           );
   return nw;
 }

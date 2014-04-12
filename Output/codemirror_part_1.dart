@@ -45,8 +45,16 @@ estimateHeight(cm) {
     if (line.widgets) for (var i = 0; i < line.widgets.length; i++) {
       if (line.widgets[i].height) widgetsHeight += line.widgets[i].height;
     }
-    if (wrapping) return widgetsHeight + ((line.text.length / perLine).ceil()
-        || 1) * th; else return widgetsHeight + th;
+    if (wrapping)
+      {
+      
+      var tst = (line.text.length / perLine).ceil();
+      
+      
+      return widgetsHeight + (tst != 0 ? tst : 1) * th;
+      } 
+    else 
+        return widgetsHeight + th;
   };
 }
 

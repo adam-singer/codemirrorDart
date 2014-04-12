@@ -1073,7 +1073,7 @@ findPosV(cm, pos, dir, unit) {
       y;
   if (unit == "page") {
     
-    //XXX
+    //XXX - this seems the closest match to the semantics
     var tst = window.innerHeight;
     var result = tst != 0 ? tst :
       document.documentElement.clientHeight;
