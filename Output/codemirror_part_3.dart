@@ -2,7 +2,7 @@ part of codemirror.dart;
 
 
 
-cursorCoords(cm, pos, context, [lineObj, preparedMeasure]) {
+cursorCoords(cm, pos, [context, lineObj, preparedMeasure]) {
   lineObj = lineObj || getLine(cm.doc, pos.line);
   if (!preparedMeasure) preparedMeasure = prepareMeasureForLine(cm, lineObj);
   get(ch, [right]) {

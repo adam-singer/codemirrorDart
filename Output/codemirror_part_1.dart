@@ -92,7 +92,11 @@ updateGutters(cm) {
         gutterClass));
     if (gutterClass == "CodeMirror-linenumbers") {
       cm.display.lineGutter = gElt;
-      gElt.style.width = (cm.display.lineNumWidth || 1) + "px";
+      
+      //XXX
+      var tst = cm.display.lineNumWidth;
+      
+      gElt.style.width = (tst != 0 ? tst : 1).toString() + "px";
     }
   }
   gutters.style.display = i ? "" : "none";

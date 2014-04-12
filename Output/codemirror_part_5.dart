@@ -936,10 +936,12 @@ e_button(e) {
   return b;
 }
 
-signalLater(emitter, type) {
+signalLater(emitter, type, [a, b, c]) {
+  var arguments = [emitter, type, a, b, c];
   var arr = emitter._handlers && emitter._handlers[type];
   if (!arr) return;
-  var args = Array.prototype.slice.call(arguments, 2);
+  var args = []; //XXX Array.prototype.slice.call(arguments, 2);
+  //Note: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/arguments
   if (!delayedCallbacks) {
     ++delayedCallbackDepth;
     delayedCallbacks = [];

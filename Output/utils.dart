@@ -110,8 +110,12 @@ copyObj(obj, [target, overwrite]) {
   return target;
 }
 
-bind(f) {
+bind(f, [a, b, c]) {
+  var arguments = [f, a, b, c]; //XXX Add in extra params
+  
   var args = []; // XXX: Array.prototype.slice.call(arguments, 1);
+  //Note from lukechurch, the above call converts the arguments into a real array
+  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/arguments
   return () {
     return f.apply(null, args);
   };

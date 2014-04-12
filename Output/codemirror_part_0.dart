@@ -325,7 +325,9 @@ _off(emitter, type, f) {
   }
 }
 
-signal(emitter, type) {
+signal(emitter, type, [a, b]) {
+  var arguments = [emitter, type, a, b];
+  
   var arr = emitter._handlers && emitter._handlers[type];
   if (!arr) return;
   var args = []; // XXX: Array.prototype.slice.call(arguments, 2);

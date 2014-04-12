@@ -215,7 +215,7 @@ _setSelection(doc, sel, options) {
   addSelectionToHistory(doc, doc.sel, doc.cm ? doc.cm.curOp.id : double.NAN, options);
 }
 
-setSelectionNoUndo(doc, sel, options) {
+setSelectionNoUndo(doc, sel, [options]) {
   if (hasHandler(doc, "beforeSelectionChange") || doc.cm && hasHandler(doc.cm,
       "beforeSelectionChange")) sel = filterSelectionChange(doc, sel);
 

@@ -487,7 +487,9 @@ adjustForChange(pos, change) {
   return newPos(line, ch);
 }
 
-computeSelAfterChange(doc, change) {
+computeSelAfterChange(doc, change, [a]) {
+  var arguments = [doc, change, a];
+  
   var out = [];
   for (var i = 0; i < doc.sel.ranges.length; i++) {
     var range = doc.sel.ranges[i];
@@ -1070,8 +1072,14 @@ findPosV(cm, pos, dir, unit) {
       x = pos.left,
       y;
   if (unit == "page") {
-    var pageSize = math.min(cm.display.wrapper.clientHeight, window.innerHeight
-        || document.documentElement.clientHeight);
+    
+    //XXX
+    var tst = window.innerHeight;
+    var result = tst != 0 ? tst :
+      document.documentElement.clientHeight;
+    
+    var pageSize = math.min(cm.display.wrapper.clientHeight, result);
+    
     y = pos.top + dir * (pageSize - (dir < 0 ? 1.5 : .5) * textHeight(cm.display
         ));
   } else if (unit == "line") {
